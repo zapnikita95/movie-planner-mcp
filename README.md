@@ -80,6 +80,11 @@ transcode, or create a smaller JPEG/PDF first. Do not call `mp_v1_plans_list` or
 `mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a fallback
 if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
 
+When `ticket_attached=true`, tell the user the full original ticket is saved in
+Movie Planner and opens from the Movie Planner plan, reminder, or Telegram bot.
+Do not tell them to open the original in T-Bank, the merchant app, or another
+ticket seller.
+
 Only pass `cinema_name`/`cinema_address` when the cinema is explicitly written
 by the user or visible in the ticket/OCR. In that case also pass
 `cinema_source="user_explicit"` or `cinema_source="ticket"`. Never infer a cinema
