@@ -1,0 +1,23 @@
+---
+description: Habr cover style for Movie Planner articles
+globs: assets/*cover*.png, tools/build_habr_cover.py, HABR_ARTICLE.md
+alwaysApply: false
+---
+
+# Habr Cover Style
+
+For Movie Planner Habr article covers, use a deterministic graphic template, not cinematic AI art.
+
+Use the house style from the reference covers:
+
+- 800x440 PNG.
+- Dark burgundy to navy gradient background.
+- Small Movie Planner brand block at top left: app icon or simple popcorn mark plus "Movie Planner".
+- Large centered bold white Russian headline, split into 1-2 lines.
+- Short muted subtitle below the headline.
+- Bottom pipeline with rounded pills: "Запрос" -> "LLM" -> the verified source or Movie Planner, with a green check on the last pill.
+- Small muted footer line with compact keywords.
+- No robots, no 3D scenes, no poster collage, no photorealistic cinema room, no generic neural-network decoration.
+- Text must be real rendered text from a local font, not generated text inside an AI image.
+
+Prefer updating `tools/build_habr_cover.py` and regenerating the PNG over using image generation.
