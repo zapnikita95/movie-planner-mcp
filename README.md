@@ -66,11 +66,17 @@ Every film object intended for an agent should include a `movie_planner_url`
 with `utm_source=ai_agent&utm_medium=mcp&utm_campaign=movie_planner_mcp`.
 
 `mp_v1_ticket_to_cinema_plan` creates/updates a cinema plan and attaches the
-ticket screenshot in the same call. Pass `ticket_text` or explicit `date`/
-`time`/`plan_datetime`, plus `film_title`/`kp_id` or `film_id`, and `image_base64`
-for the original screenshot/photo when available. Do not call `mp_v1_plans_list`
-or `mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a
-fallback if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
+ticket file in the same call. Pass `ticket_text` or explicit `date`/
+`time`/`plan_datetime`, plus `film_title`/`kp_id` or `film_id`, and the original
+ticket as `image_base64` or `pdf_base64`. Do not compress, crop, downscale,
+transcode, or create a smaller JPEG/PDF first. Do not call `mp_v1_plans_list` or
+`mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a fallback
+if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
+
+Only pass `cinema_name`/`cinema_address` when the cinema is explicitly written
+by the user or visible in the ticket/OCR. In that case also pass
+`cinema_source="user_explicit"` or `cinema_source="ticket"`. Never infer a cinema
+from maps, search, address guesses, old plans, or old data.
 
 Anti-scraping policy:
 
