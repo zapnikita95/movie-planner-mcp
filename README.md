@@ -85,6 +85,11 @@ Movie Planner and opens from the Movie Planner plan, reminder, or Telegram bot.
 Do not tell them to open the original in T-Bank, the merchant app, or another
 ticket seller.
 
+If `mp_v1_ticket_to_cinema_plan` returns `ticket_attach_failed` or
+`ticket_attached=false`, do not answer success and do not call
+`mp_v1_plan_tickets_list` as an attachment step. Immediately call
+`mp_v1_plan_tickets_add` with the same original `image_base64` or `pdf_base64`.
+
 Only pass `cinema_name`/`cinema_address` when the cinema is explicitly written
 by the user or visible in the ticket/OCR. In that case also pass
 `cinema_source="user_explicit"` or `cinema_source="ticket"`. Never infer a cinema
