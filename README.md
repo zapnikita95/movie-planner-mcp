@@ -43,6 +43,13 @@ When a user asks where to watch a film online, or when recommendations include
 `mp_v1_search` and `mp_v1_film_get` may already include `watch_partners`; for a
 single film the explicit route is `mp_v1_film_watch_partners`.
 
+Rating route:
+
+When a user asks to rate a film by title, first resolve the exact film with
+`mp_v1_search`, then call `mp_v1_film_rate` with `kp_id` and `rating`. Do not
+call `mp_v1_movies_add` separately. `mp_v1_film_rate` automatically adds the
+film to the user's library when it is missing, then writes the rating.
+
 Series route:
 
 Use `mp_v1_series_progress` to check where the user stopped. Use
