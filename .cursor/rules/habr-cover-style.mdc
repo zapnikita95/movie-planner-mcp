@@ -1,23 +1,28 @@
 ---
 description: Habr cover style for Movie Planner articles
-globs: assets/*cover*.png, tools/build_habr_cover.py, HABR_ARTICLE.md
+globs: assets/*cover*.png, HABR_ARTICLE.md, dist/*.docx
 alwaysApply: false
 ---
 
 # Habr Cover Style
 
-For Movie Planner Habr article covers, use a deterministic graphic template, not cinematic AI art.
+For Movie Planner Habr article covers, use the canonical skill from the main Movie Planner bot repo:
 
-Use the house style from the reference covers:
+`C:\Users\1\Desktop\Movie Planner\wt-mcp-ticket-routing\.cursor\skills\article-cover-format\SKILL.md`
 
-- 800x440 PNG.
-- Dark burgundy to navy gradient background.
-- Small Movie Planner brand block at top left: app icon or simple popcorn mark plus "Movie Planner".
-- Large centered bold white Russian headline, split into 1-2 lines.
-- Short muted subtitle below the headline.
-- Bottom pipeline with rounded pills: "Запрос" -> "LLM" -> the verified source or Movie Planner, with a green check on the last pill.
-- Small muted footer line with compact keywords.
-- No robots, no 3D scenes, no poster collage, no photorealistic cinema room, no generic neural-network decoration.
-- Text must be real rendered text from a local font, not generated text inside an AI image.
+Do not hand-roll a new cover generator in this repo.
 
-Prefer updating `tools/build_habr_cover.py` and regenerating the PNG over using image generation.
+Canonical implementation:
+
+- `scripts/build_habr_article_cover.py`
+- `scripts/article_cover_theme.py`
+- size exactly 780x440
+- Unbounded Black/SemiBold from `moviebot/assets/fonts`
+- `moviebot/assets/og/icon48.png`
+- dark gradient with pink/purple glow
+- bottom chips rendered via `article_cover_theme.draw_chip`
+- checkmark drawn as lines, not Unicode
+
+For this MCP article, generate the cover by importing `article_cover_theme` from the main repo and writing to:
+
+`assets/movie-planner-mcp-cover.png`
