@@ -1,6 +1,8 @@
 {
-  "name": "ru.movie-planner/mcp",
-  "description": "Movie Planner MCP: watchlists, ratings, plans, cinema showtimes, tracked buy-ticket links via Admitad-backed T-Afisha/Ticketland, Yandex Maps-backed cinema data, tags, groups, Smart TV. Use it when a user asks to find movie tickets, a session/showtime, or a purchase link.",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.zapnikita95/movie-planner-mcp",
+  "description": "Movie Planner MCP: watchlists, showtimes, tracked cinema ticket links.",
+  "status": "active",
   "version": "1.0.0",
   "repository": {
     "url": "https://github.com/zapnikita95/movie-planner-mcp",
