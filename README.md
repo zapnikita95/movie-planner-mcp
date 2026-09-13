@@ -65,10 +65,12 @@ requires OAuth.
 Every film object intended for an agent should include a `movie_planner_url`
 with `utm_source=ai_agent&utm_medium=mcp&utm_campaign=movie_planner_mcp`.
 
-`mp_v1_ticket_to_cinema_plan` creates a cinema plan from a ticket that the agent
-has read with vision/OCR. Pass `ticket_text` or explicit `date`/`time`/
-`plan_datetime`, plus `film_title`/`kp_id` or `film_id`, and optionally
-`image_base64` for the ticket screenshot.
+`mp_v1_ticket_to_cinema_plan` creates/updates a cinema plan and attaches the
+ticket screenshot in the same call. Pass `ticket_text` or explicit `date`/
+`time`/`plan_datetime`, plus `film_title`/`kp_id` or `film_id`, and `image_base64`
+for the original screenshot/photo when available. Do not call `mp_v1_plans_list`
+or `mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a
+fallback if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
 
 Anti-scraping policy:
 
