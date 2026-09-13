@@ -21,6 +21,8 @@ Ticket route for agents:
 1. Resolve the film with `mp_v1_search`.
 2. For a purchase link call `mp_v1_film_ticket_partners`.
 3. For sessions/showtimes call `mp_v1_film_cinema_showtimes`.
+   For tomorrow or nearest days, pass `date=YYYY-MM-DD` and `days=2..3`
+   before saying that future schedule is unavailable.
 4. For current cinema releases call `mp_v1_cinema_now_playing`.
 5. If the user sends an already purchased ticket, read it with vision/OCR and call `mp_v1_ticket_to_cinema_plan`.
 
@@ -73,17 +75,29 @@ Every film object intended for an agent should include a `movie_planner_url`
 with `utm_source=ai_agent&utm_medium=mcp&utm_campaign=movie_planner_mcp`.
 
 `mp_v1_ticket_to_cinema_plan` creates/updates a cinema plan and attaches the
-ticket file in the same call. Pass `ticket_text` or explicit `date`/
-`time`/`plan_datetime`, plus `film_title`/`kp_id` or `film_id`, and the original
-ticket as `image_base64` or `pdf_base64`. Do not compress, crop, downscale,
-transcode, or create a smaller JPEG/PDF first. Do not call `mp_v1_plans_list` or
-`mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a fallback
-if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
+ticket file in the same call. For screenshots/PDF tickets, upload the original
+file first with `mp_v1_ticket_upload_start`, `mp_v1_ticket_upload_chunk`, and
+`mp_v1_ticket_upload_finish`, then pass `ticket_upload_id` to
+`mp_v1_ticket_to_cinema_plan` together with `ticket_text` or explicit `date`/
+`time`/`plan_datetime`, plus `film_title`/`kp_id` or `film_id`.
+
+Inline `image_base64` or `pdf_base64` is only a fallback for small files when
+the tool-call layer can safely carry the full original. Do not compress, crop,
+downscale, transcode, reduce JPEG quality, or create a smaller JPEG/PDF first.
+If base64/chunk upload fails with `payload_truncated`, `invalid_base64_chunk`,
+`chunk_too_large`, `ticket_attach_failed`, or `ticket_attached=false`, re-read
+and resend the same original file through ticket-upload chunks. Do not make a
+smaller image as a workaround.
+
+Do not call `mp_v1_plans_list` or `mp_v1_plan_tickets_add` first; use
+`mp_v1_plan_tickets_add` only as a fallback if `mp_v1_ticket_to_cinema_plan`
+returns `ticket_attached=false`, and pass `ticket_upload_id` there.
 
 `ticket_text`/OCR is metadata, not a ticket file substitute. If the user sent a
-screenshot or PDF, `image_base64` or `pdf_base64` is mandatory; otherwise the
-server returns `ticket_file_required`. For an ordinary plan without a ticket
-file, use `mp_v1_plans_create` instead of the ticket route.
+screenshot or PDF, `ticket_upload_id`, `image_base64`, or `pdf_base64` is
+mandatory; otherwise the server returns `ticket_file_required`. For an ordinary
+plan without a ticket file, use `mp_v1_plans_create` instead of the ticket
+route.
 
 When `ticket_attached=true`, tell the user the full original ticket is saved in
 Movie Planner and opens from the Movie Planner plan, reminder, or Telegram bot.
@@ -93,7 +107,8 @@ ticket seller.
 If `mp_v1_ticket_to_cinema_plan` returns `ticket_attach_failed` or
 `ticket_attached=false`, do not answer success and do not call
 `mp_v1_plan_tickets_list` as an attachment step. Immediately call
-`mp_v1_plan_tickets_add` with the same original `image_base64` or `pdf_base64`.
+`mp_v1_plan_tickets_add` with the same `ticket_upload_id`, or re-upload the same
+original file with ticket-upload chunks and pass the new `ticket_upload_id`.
 
 Only pass `cinema_name`/`cinema_address` when the cinema is explicitly written
 by the user or visible in the ticket/OCR. In that case also pass
