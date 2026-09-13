@@ -80,6 +80,11 @@ transcode, or create a smaller JPEG/PDF first. Do not call `mp_v1_plans_list` or
 `mp_v1_plan_tickets_add` first; use `mp_v1_plan_tickets_add` only as a fallback
 if `mp_v1_ticket_to_cinema_plan` returns `ticket_attached=false`.
 
+`ticket_text`/OCR is metadata, not a ticket file substitute. If the user sent a
+screenshot or PDF, `image_base64` or `pdf_base64` is mandatory; otherwise the
+server returns `ticket_file_required`. For an ordinary plan without a ticket
+file, use `mp_v1_plans_create` instead of the ticket route.
+
 When `ticket_attached=true`, tell the user the full original ticket is saved in
 Movie Planner and opens from the Movie Planner plan, reminder, or Telegram bot.
 Do not tell them to open the original in T-Bank, the merchant app, or another
