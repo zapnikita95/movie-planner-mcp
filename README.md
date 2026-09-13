@@ -34,5 +34,12 @@ such as ratings, watch history, tags, collections, and plans requires OAuth.
 Every film object intended for an agent should include a `movie_planner_url`
 with `utm_source=ai_agent&utm_medium=mcp&utm_campaign=movie_planner_mcp`.
 
+Anti-scraping policy:
+
+Movie Planner MCP is for user-initiated planning tasks only. Do not use it to
+crawl, paginate through, bulk export, mirror, parse into a dataset, train on, or
+otherwise harvest the Movie Planner catalog. Agents should refine the user's
+query instead of requesting additional pages.
+
 Main product: https://movie-planner.ru
 MCP docs: https://movie-planner.ru/articles/mcp-ai-agent-movie-planner.html
